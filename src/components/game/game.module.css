@@ -5,6 +5,10 @@
   gap: 28px;
 }
 
+.thinking {
+  text-align: center;
+}
+
 .gameTop {
   display: flex;
   align-items: center;
@@ -62,6 +66,10 @@
 .cell:not(.marked):hover {
   transform: translate3d(0, 3px, 0);
   box-shadow: 0 6px 0 var(--board-btn-shadow-color);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
 }
 
 .winning.markX {

@@ -2,13 +2,15 @@ import Head from "next/head";
 import Menu from "@/components/menu/menu";
 import Game from "@/components/game/game";
 import { GameMode } from "@/lib/abc";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Home() {
   const [home, setHome] = useState(true);
   const [activeMark, setActiveMark] = useState("o");
+  const gameMode = useRef(GameMode.VsHuman);
 
   function startGame(mode: GameMode) {
+    gameMode.current = mode;
     setHome(false);
   }
 
@@ -33,7 +35,11 @@ export default function Home() {
             onStart={startGame}
           />
         ) : (
-          <Game playerOneMark={activeMark} onEnd={() => setHome(true)} />
+          <Game
+            gameMode={gameMode.current}
+            playerOneMark={activeMark}
+            onEnd={() => setHome(true)}
+          />
         )}
       </main>
     </>

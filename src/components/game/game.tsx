@@ -1,28 +1,46 @@
 import styles from "@/components/game/game.module.css";
-import { winner } from "@/lib/abc";
-import { useState } from "react";
 import WinnerModal from "./winner_modal";
 import Modal from "./generic_modal";
+import getAIsMove from "@/lib/ai";
+import { GameMode, winner } from "@/lib/abc";
+import { useEffect, useState } from "react";
 
-type GameProps = { playerOneMark: string; onEnd: () => void };
+type GameProps = {
+  gameMode: GameMode;
+  playerOneMark: string;
+  onEnd: () => void;
+};
 
-export default function Game({ playerOneMark, onEnd }: GameProps) {
+enum ModalType {
+  RestartModal,
+  WinnerModal,
+  TiedModal,
+}
+
+type ModalState = {
+  type?: ModalType;
+  value?: string;
+};
+
+export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
   const [mark, setMark] = useState("x");
   const [scores, setScores] = useState({ x: 0, o: 0, ties: 0 });
 
-  const [showEndModal, setShowEndModal] = useState(false);
-  const [showRestartModal, setShowRestartModal] = useState(false);
+  const [modalState, setModalState] = useState<ModalState>({});
 
   const [board, setBoard] = useState(Array(9).fill(""));
   const [boardClasses, setBoardClasses] = useState<string[]>(
     Array(9).fill(styles.cell)
   );
 
-  // const playerTwoMark = playerOneMark == "x" ? "o" : "x";
+  const isAIsTurn = gameMode == GameMode.VsAI && playerOneMark != mark;
+  if (isAIsTurn) {
+    handleAIsTurn();
+  }
 
-  const boardRes = winner(board);
-  if (boardRes.res != "" && !showEndModal) {
-    handleEndState(boardRes);
+  function handleAIsTurn() {
+    const cellIdx = getAIsMove(board, mark);
+    makeMove(cellIdx!);
   }
 
   function handleEndState(res: { res: string; line: number[] }) {
@@ -39,13 +57,17 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
   }
 
   function handleWinState(winningMark: "x" | "o", line: number[]) {
-    const newBoardClasses = boardClasses.slice();
-    newBoardClasses[line[0]] += ` ${styles.winning}`;
-    newBoardClasses[line[1]] += ` ${styles.winning}`;
-    newBoardClasses[line[2]] += ` ${styles.winning}`;
+    setBoardClasses((prev) => {
+      const newBoardClasses = prev.slice();
+      newBoardClasses[line[0]] += ` ${styles.winning}`;
+      newBoardClasses[line[1]] += ` ${styles.winning}`;
+      newBoardClasses[line[2]] += ` ${styles.winning}`;
 
-    setBoardClasses(newBoardClasses);
-    setShowEndModal(true);
+      return newBoardClasses;
+    });
+    setModalState({ type: ModalType.WinnerModal, value: winningMark });
+    setMark(mark == "x" ? "o" : "x");
+    // setMark(winningMark);
     setScores({
       ...scores,
       [winningMark]: scores[winningMark] + 1,
@@ -53,7 +75,8 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
   }
 
   function handleTieState() {
-    setShowEndModal(true);
+    setModalState({ type: ModalType.TiedModal });
+    setMark(mark == "x" ? "o" : "x");
     setScores({
       ...scores,
       ties: scores.ties + 1,
@@ -80,7 +103,10 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
 
   function handleMouseClickCell(cellIdx: number) {
     if (boardClasses[cellIdx].includes("marked")) return;
+    makeMove(cellIdx);
+  }
 
+  function makeMove(cellIdx: number) {
     const newBoard = board.slice();
     newBoard[cellIdx] = mark;
     setBoard(newBoard);
@@ -90,6 +116,12 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
       mark == "x" ? styles.markX : styles.markO
     }`;
     setBoardClasses(newBoardClasses);
+
+    const boardRes = winner(newBoard);
+    if (boardRes.res != "") {
+      handleEndState(boardRes);
+      return;
+    }
 
     setMark(mark == "x" ? "o" : "x");
   }
@@ -102,6 +134,8 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
   return (
     <>
       <div className={styles.game}>
+        {isAIsTurn && <span className={styles.thinking}>AI is thinking</span>}
+
         <section className={styles.gameTop}>
           <div className={styles.gameLogo}>
             <img src="images/logo.svg" alt="Logo" />
@@ -111,7 +145,7 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
             TURN
           </div>
           <button
-            onClick={() => setShowRestartModal(true)}
+            onClick={() => setModalState({ type: ModalType.RestartModal })}
             type="button"
             className={`${styles.restartBtn} push-button gray`}
           >
@@ -123,6 +157,7 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
           {boardClasses.map((className: string, index: number) => {
             return (
               <button
+                disabled={isAIsTurn}
                 key={index}
                 onMouseEnter={() => handleMouseEnterCell(index)}
                 onMouseLeave={() => handleMouseLeaveCell(index)}
@@ -136,7 +171,16 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
 
         <section className={styles.scoreBoard}>
           <div>
-            <span className="score-label">X (CPU)</span>
+            <span className="score-label">
+              X
+              {gameMode == GameMode.VsAI
+                ? playerOneMark == "x"
+                  ? " (YOU)"
+                  : " (AI)"
+                : playerOneMark == "x"
+                ? " (P1)"
+                : " (P2)"}
+            </span>
             <span className="score">{scores.x}</span>
           </div>
           <div>
@@ -144,13 +188,22 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
             <span className="score">{scores.ties}</span>
           </div>
           <div>
-            <span className="score-label">O (YOU)</span>
+            <span className="score-label">
+              O{" "}
+              {gameMode == GameMode.VsAI
+                ? playerOneMark == "o"
+                  ? " (YOU)"
+                  : " (AI)"
+                : playerOneMark == "o"
+                ? " (P1)"
+                : " (P2)"}
+            </span>
             <span className="score">{scores.o}</span>
           </div>
         </section>
       </div>
 
-      {showRestartModal && (
+      {modalState.type == ModalType.RestartModal && (
         <>
           <div id="overlay"></div>
           <Modal
@@ -158,45 +211,48 @@ export default function Game({ playerOneMark, onEnd }: GameProps) {
             btnOneTitle="CANCEL"
             btnTwoTitle="RESTART"
             btnOneHandler={() => {
-              setShowRestartModal(false);
+              setModalState({});
             }}
             btnTwoHandler={() => {
-              setShowRestartModal(false);
+              setModalState({});
               resetGame();
             }}
           />
         </>
       )}
 
-      {showEndModal && (
+      {modalState.type == ModalType.WinnerModal && (
         <>
           <div id="overlay"></div>
-          {boardRes.res == "draw" ? (
-            <Modal
-              modalTitle="ROUND TIED!"
-              btnOneTitle="QUIT"
-              btnTwoTitle="NEXT ROUND"
-              btnOneHandler={onEnd}
-              btnTwoHandler={() => {
-                setShowEndModal(false);
-                resetGame();
-              }}
-            />
-          ) : (
-            <WinnerModal
-              title={
-                playerOneMark == boardRes.res
-                  ? "PLAYER 1 WINS"
-                  : "PLAYER 2 WINS"
-              }
-              winner={boardRes.res as "x" | "o"}
-              onNextBtnClicked={() => {
-                setShowEndModal(false);
-                resetGame();
-              }}
-              onQuitBtnClicked={onEnd}
-            />
-          )}
+          <WinnerModal
+            title={
+              playerOneMark == modalState.value
+                ? "PLAYER 1 WINS"
+                : "PLAYER 2 WINS"
+            }
+            winner={modalState.value as "x" | "o"}
+            onNextBtnClicked={() => {
+              setModalState({});
+              resetGame();
+            }}
+            onQuitBtnClicked={onEnd}
+          />
+        </>
+      )}
+
+      {modalState.type == ModalType.TiedModal && (
+        <>
+          <div id="overlay"></div>
+          <Modal
+            modalTitle="ROUND TIED!"
+            btnOneTitle="QUIT"
+            btnTwoTitle="NEXT ROUND"
+            btnOneHandler={onEnd}
+            btnTwoHandler={() => {
+              setModalState({});
+              resetGame();
+            }}
+          />
         </>
       )}
     </>
