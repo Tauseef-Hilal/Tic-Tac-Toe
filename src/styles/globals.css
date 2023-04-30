@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+
+:root {
+  --background-color: #1a2a33;
+  --player-picker-bg: #1f3641;
+  --player-picker-active-btn-bg: #a8bfc9;
+  --player-picker-btn-hover: rgba(168, 191, 201, 0.05);
+  --text-color-white: rgb(168, 191, 201);
+  --text-color-dark: rgb(25, 42, 51);
+  --note-text-color: rgb(99, 123, 133);
+  --btn-color-gold: rgb(242, 177, 55);
+  --btn-gold-shadow-color: rgb(203, 139, 18);
+  --btn-color-green: rgb(49, 195, 189);
+  --btn-green-shadow-color: rgb(17, 140, 135);
+  --btn-color-gray: rgb(168, 191, 201);
+  --btn-gray-shadow-color: rgb(107, 137, 151);
+  --board-btn-shadow-color: rgb(15, 25, 29);
+}
+
+/* Reusable Classes */
+.note {
+  font-size: 0.8em;
+}
+
+.push-button {
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 12px 12px;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  background-color: var(--player-picker-bg);
+  width: 100vw;
+  padding: 48px;
+  top: 100%;
+}
+
+.modal.active {
+  position: fixed;
+  top: 36%;
+  visibility: visible;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Overlay for modals */
+#overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+button {
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  background-color: unset;
+  padding: none;
+  text-decoration: none;
+}
+
+button[class*="push-button gold"] {
+  background-color: var(--btn-color-gold);
+  box-shadow: 0 6px 0 var(--btn-gold-shadow-color);
+}
+
+button[class*="push-button green"] {
+  background-color: var(--btn-color-green);
+  box-shadow: 0 6px 0 var(--btn-green-shadow-color);
+}
+
+button[class*="push-button gray"] {
+  background-color: var(--btn-color-gray);
+  box-shadow: 0 6px 0 var(--btn-gray-shadow-color);
+}
+
+/* Body */
+body {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  color: var(--text-color-white);
+  background-color: var(--background-color);
+}

@@ -1,0 +1,67 @@
+.playerPicker {
+  background-color: var(--player-picker-bg);
+  box-shadow: inset 0px -8px 0px #10212a;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pickerHeader {
+  text-align: center;
+  font-size: 1.1em;
+  font-family: 700;
+}
+
+.pickerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pickerButtons {
+  border-radius: 12px;
+  background-color: var(--background-color);
+  padding: 8px;
+  gap: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pickerButtons button {
+  font-size: 2.5em;
+  font-weight: bold;
+  padding: 8px 24px;
+  flex: 1;
+  border-radius: 8px;
+  transition: background-color ease-out 300ms;
+  height: 64px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 42px;
+  filter: brightness(0) saturate(100%) invert(89%) sepia(16%) saturate(295%)
+    hue-rotate(156deg) brightness(82%) contrast(89%);
+}
+
+.pickXBtn {
+  background-image: url(/images/icon-x-dark.svg);
+}
+
+.pickOBtn {
+  background-image: url(/images/icon-o-dark.svg);
+}
+
+.pickerButtons .active {
+  filter: none;
+  background-color: var(--player-picker-active-btn-bg);
+}
+
+.pickerButtons :not(.active):hover {
+  background-color: var(--player-picker-btn-hover);
+}
+
+.pickerNote {
+  color: var(--note-text-color);
+  text-align: center;
+}

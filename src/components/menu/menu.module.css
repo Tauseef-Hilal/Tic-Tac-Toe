@@ -1,0 +1,32 @@
+.gameMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 420px;
+}
+
+.logo {
+  text-align: center;
+}
+
+.menuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.menuButtons button {
+  transition: box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    background-size 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menuButtons button:first-child:hover {
+  transform: translate3d(0, 3px, 0);
+  box-shadow: 0 3px 0 var(--btn-gold-shadow-color);
+}
+
+.menuButtons button:last-child:hover {
+  transform: translate3d(0, 3px, 0);
+  box-shadow: 0 3px 0 var(--btn-green-shadow-color);
+}
