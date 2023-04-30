@@ -34,8 +34,8 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
   );
 
   const isAIsTurn = gameMode == GameMode.VsAI && playerOneMark != mark;
-  if (isAIsTurn) {
-    handleAIsTurn();
+  if (!modalState.type && isAIsTurn) {
+    setTimeout(handleAIsTurn, 500);
   }
 
   function handleAIsTurn() {
@@ -66,8 +66,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
       return newBoardClasses;
     });
     setModalState({ type: ModalType.WinnerModal, value: winningMark });
-    setMark(mark == "x" ? "o" : "x");
-    // setMark(winningMark);
+    setMark(winningMark);
     setScores({
       ...scores,
       [winningMark]: scores[winningMark] + 1,
@@ -127,6 +126,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
   }
 
   function resetGame() {
+    setMark("x");
     setBoard(Array(9).fill(""));
     setBoardClasses(Array(9).fill(styles.cell));
   }
@@ -134,7 +134,11 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
   return (
     <>
       <div className={styles.game}>
-        {isAIsTurn && <span className={styles.thinking}>AI is thinking</span>}
+        <span
+          className={`${styles.thinking} ${isAIsTurn && styles.showThinking}`}
+        >
+          AI is thinking
+        </span>
 
         <section className={styles.gameTop}>
           <div className={styles.gameLogo}>

@@ -6,7 +6,12 @@
 }
 
 .thinking {
+  opacity: 0;
   text-align: center;
+}
+
+.showThinking {
+  opacity: 1;
 }
 
 .gameTop {
