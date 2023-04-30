@@ -2,6 +2,7 @@ import Head from "next/head";
 import Menu from "@/components/menu/menu";
 import { GameMode } from "@/lib/abc";
 import { useState } from "react";
+import Game from "@/components/game/game";
 
 export default function Home() {
   const [home, setHome] = useState(true);
@@ -19,7 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {home ? <Menu onStart={startGame}></Menu> : <h1>Game Start</h1>}
+        {home ? <Menu onStart={startGame}></Menu> : <Game />}
       </main>
     </>
   );

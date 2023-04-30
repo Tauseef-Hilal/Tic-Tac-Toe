@@ -1,0 +1,129 @@
+.game {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.gameTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 64px;
+}
+
+.gameLogo {
+  display: flex;
+  align-items: center;
+}
+
+.gameTurn {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--player-picker-bg);
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 0 var(--board-btn-shadow-color);
+}
+
+.currentPlayer {
+  font-size: 1.2em;
+}
+
+.restartBtn {
+  border-radius: 8px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 0 var(--btn-gray-shadow-color);
+}
+
+.gameBoard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.cell {
+  padding: 18px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background-color: var(--player-picker-bg);
+  box-shadow: 0 8px 0px var(--board-btn-shadow-color);
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    background-size 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cell:not(.marked):hover {
+  transform: translate3d(0, 3px, 0);
+  box-shadow: 0 6px 0 var(--board-btn-shadow-color);
+}
+
+.cell.winning.markX {
+  background-color: var(--btn-color-green);
+  background-image: url("/images/icon-x-dark.svg");
+}
+
+.cell.winning.markO {
+  background-color: var(--btn-color-gold);
+  background-image: url("/images/icon-o-dark.svg");
+}
+
+.cell.marked {
+  cursor: not-allowed;
+}
+
+.cell.outlineX {
+  background-image: url("/images/icon-x-outline.svg");
+}
+
+.cell.outlineO {
+  background-image: url("/images/icon-o-outline.svg");
+}
+
+.cell.markX {
+  box-shadow: 0 3px 0 var(--board-btn-shadow-color);
+  background-image: url(/images/icon-x.svg);
+}
+
+.cell.markO {
+  box-shadow: 0 3px 0 var(--board-btn-shadow-color);
+  background-image: url(/images/icon-o.svg);
+}
+
+.gameBottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.gameBottom > div {
+  font-size: 1em;
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 4px;
+  flex: 1;
+  background-color: var(--btn-color-green);
+  color: var(--text-color-dark);
+}
+
+.gameBottom > div:nth-child(2) {
+  background-color: var(--btn-color-gray);
+}
+
+.gameBottom > div:nth-child(3) {
+  background-color: var(--btn-color-gold);
+}
+
+.gameBottom .score {
+  font-weight: bold;
+  font-size: 1.5em;
+}
