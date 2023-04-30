@@ -3,6 +3,7 @@ import WinnerModal from "./winner_modal";
 import Modal from "./generic_modal";
 import getAIsMove from "@/lib/ai";
 import { GameMode, winner } from "@/lib/abc";
+import { useState } from "react";
 
 type GameProps = {
   gameMode: GameMode;
