@@ -12,7 +12,9 @@ export default function PlayerPicker({
   return (
     <>
       <div className={styles.playerPicker}>
-        <header className={styles.pickerHeader}>PICK PLAYER 1'S MARK</header>
+        <header className={styles.pickerHeader}>
+          PICK PLAYER 1&apos;S MARK
+        </header>
         <section className={styles.pickerContent}>
           <div className={styles.pickerButtons}>
             <button
