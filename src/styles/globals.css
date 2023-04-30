@@ -44,13 +44,9 @@
   background-color: var(--player-picker-bg);
   width: 100vw;
   padding: 48px;
-  top: 100%;
-}
-
-.modal.active {
   position: fixed;
   top: 36%;
-  visibility: visible;
+  left: 0;
 }
 
 .modal-buttons {
@@ -61,6 +57,8 @@
 /* Overlay for modals */
 #overlay {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);

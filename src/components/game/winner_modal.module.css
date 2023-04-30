@@ -1,0 +1,31 @@
+.modalTitle {
+  font-weight: bold;
+}
+
+.modalContent {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 2.6em;
+}
+
+.winner {
+  width: 64px;
+  height: 64px;
+}
+
+.markX {
+  background-image: url(/images/icon-x.svg);
+}
+
+.markO {
+  background-image: url(/images/icon-o.svg);
+}
+
+.gold {
+  color: var(--btn-color-gold);
+}
+
+.green {
+  color: var(--btn-color-green);
+}

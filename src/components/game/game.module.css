@@ -64,45 +64,45 @@
   box-shadow: 0 6px 0 var(--board-btn-shadow-color);
 }
 
-.cell.winning.markX {
+.winning.markX {
   background-color: var(--btn-color-green);
   background-image: url("/images/icon-x-dark.svg");
 }
 
-.cell.winning.markO {
+.winning.markO {
   background-color: var(--btn-color-gold);
   background-image: url("/images/icon-o-dark.svg");
 }
 
-.cell.marked {
+.marked {
   cursor: not-allowed;
 }
 
-.cell.outlineX {
+.outlineX {
   background-image: url("/images/icon-x-outline.svg");
 }
 
-.cell.outlineO {
+.outlineO {
   background-image: url("/images/icon-o-outline.svg");
 }
 
-.cell.markX {
+.markX {
   box-shadow: 0 3px 0 var(--board-btn-shadow-color);
   background-image: url(/images/icon-x.svg);
 }
 
-.cell.markO {
+.markO {
   box-shadow: 0 3px 0 var(--board-btn-shadow-color);
   background-image: url(/images/icon-o.svg);
 }
 
-.gameBottom {
+.scoreBoard {
   display: flex;
   justify-content: space-between;
   gap: 18px;
 }
 
-.gameBottom > div {
+.scoreBoard > div {
   font-size: 1em;
   display: flex;
   border-radius: 10px;
@@ -115,15 +115,20 @@
   color: var(--text-color-dark);
 }
 
-.gameBottom > div:nth-child(2) {
+.scoreBoard > div:nth-child(2) {
   background-color: var(--btn-color-gray);
 }
 
-.gameBottom > div:nth-child(3) {
+.scoreBoard > div:nth-child(3) {
   background-color: var(--btn-color-gold);
 }
 
-.gameBottom .score {
+.scoreBoard .score {
   font-weight: bold;
   font-size: 1.5em;
+}
+
+.winner {
+  width: 64px;
+  height: 64px;
 }

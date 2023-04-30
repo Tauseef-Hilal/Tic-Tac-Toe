@@ -4,26 +4,25 @@ import { useState } from "react";
 import { GameMode } from "@/lib/abc";
 
 type MenuProps = {
+  activeMark: string;
   onStart: (mode: GameMode) => void;
+  pickerHandler: (picked: string) => void;
 };
 
-export default function Menu({ onStart }: MenuProps) {
-  const [activeMark, setActiveMark] = useState("o");
-
-  function playerPickerhandler(picked: string) {
-    setActiveMark(picked);
-  }
-
+export default function Menu({
+  activeMark,
+  onStart,
+  pickerHandler,
+}: MenuProps) {
   return (
     <>
       <div className={styles.gameMenu}>
         <section className={styles.logo}>
           <img src="images/logo.svg" alt="Logo" />
         </section>
-        <PlayerPicker
-          activeBtn={activeMark}
-          pickerBtnHandler={playerPickerhandler}
-        />
+
+        <PlayerPicker activeBtn={activeMark} pickerBtnHandler={pickerHandler} />
+
         <section className={styles.menuButtons}>
           <button
             onClick={() => onStart(GameMode.VsHuman)}
