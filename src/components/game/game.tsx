@@ -125,8 +125,11 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
     setMark(mark == "x" ? "o" : "x");
   }
 
-  function resetGame() {
-    setMark("x");
+  function resetGame({ resetMark = false }) {
+    if (resetMark) {
+      setMark("x");
+    }
+
     setBoard(Array(9).fill(""));
     setBoardClasses(Array(9).fill(styles.cell));
   }
@@ -219,7 +222,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
             }}
             btnTwoHandler={() => {
               setModalState({});
-              resetGame();
+              resetGame({ resetMark: true });
             }}
           />
         </>
@@ -237,7 +240,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
             winner={modalState.value as "x" | "o"}
             onNextBtnClicked={() => {
               setModalState({});
-              resetGame();
+              resetGame({});
             }}
             onQuitBtnClicked={onEnd}
           />
@@ -254,7 +257,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
             btnOneHandler={onEnd}
             btnTwoHandler={() => {
               setModalState({});
-              resetGame();
+              resetGame({});
             }}
           />
         </>
