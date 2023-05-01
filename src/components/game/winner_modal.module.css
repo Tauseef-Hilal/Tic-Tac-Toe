@@ -29,3 +29,16 @@
 .green {
   color: var(--btn-color-green);
 }
+
+@media screen and (max-width: 565px) {
+  .modalContent {
+    font-size: 1.5em;
+    gap: 12px;
+  }
+
+  .winner {
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

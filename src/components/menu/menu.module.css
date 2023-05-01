@@ -30,3 +30,9 @@
   transform: translate3d(0, 3px, 0);
   box-shadow: 0 3px 0 var(--btn-green-shadow-color);
 }
+
+@media screen and (max-width: 420px) {
+  .gameMenu {
+    width: 300px;
+  }
+}
