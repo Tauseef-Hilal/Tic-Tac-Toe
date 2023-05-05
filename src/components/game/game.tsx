@@ -163,7 +163,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
       {modalState.type && (
         <ModalView
           type={modalState.type}
-          value={modalState.value!}
+          value={modalState.value}
           playerOneMark={playerOneMark}
           modalStateUpdater={setModalState}
           resetGameFunc={resetGame}

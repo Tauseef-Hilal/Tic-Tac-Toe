@@ -4,7 +4,7 @@ import WinnerModal from "./winner_modal";
 
 type ModalViewProps = {
   type: ModalType;
-  value: string;
+  value?: string;
   playerOneMark: string;
   modalStateUpdater: (value: any) => void;
   resetGameFunc: ({ resetMark = false }: { resetMark?: boolean }) => void;

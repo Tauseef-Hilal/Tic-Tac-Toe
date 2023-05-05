@@ -3,7 +3,7 @@ export const enum GameMode {
   VsAI,
 }
 export const enum ModalType {
-  RestartModal,
+  RestartModal = 1,
   WinnerModal,
   TiedModal,
 }
