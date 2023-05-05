@@ -1,21 +1,18 @@
-import styles from "@/components/game/game.module.css";
-import WinnerModal from "./winner_modal";
-import Modal from "./generic_modal";
-import getAIsMove from "@/lib/ai";
-import { GameMode, winner } from "@/lib/abc";
 import { useState } from "react";
+import { GameMode, ModalType, winner } from "@/lib/abc";
+import getAIsMove from "@/lib/ai";
+import styles from "./styles/game.module.css";
+import GameScoreboard from "./scoreboard";
+import GameHeader from "./game_header";
+import GameBoard from "./board";
+import boardStyles from "./styles/board.module.css";
+import ModalView from "./model_view";
 
 type GameProps = {
   gameMode: GameMode;
   playerOneMark: string;
   onEnd: () => void;
 };
-
-enum ModalType {
-  RestartModal,
-  WinnerModal,
-  TiedModal,
-}
 
 type ModalState = {
   type?: ModalType;
@@ -30,7 +27,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
 
   const [board, setBoard] = useState(Array(9).fill(""));
   const [boardClasses, setBoardClasses] = useState<string[]>(
-    Array(9).fill(styles.cell)
+    Array(9).fill(boardStyles.cell)
   );
 
   const isAIsTurn = gameMode == GameMode.VsAI && playerOneMark != mark;
@@ -59,9 +56,9 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
   function handleWinState(winningMark: "x" | "o", line: number[]) {
     setBoardClasses((prev) => {
       const newBoardClasses = prev.slice();
-      newBoardClasses[line[0]] += ` ${styles.winning}`;
-      newBoardClasses[line[1]] += ` ${styles.winning}`;
-      newBoardClasses[line[2]] += ` ${styles.winning}`;
+      newBoardClasses[line[0]] += ` ${boardStyles.winning}`;
+      newBoardClasses[line[1]] += ` ${boardStyles.winning}`;
+      newBoardClasses[line[2]] += ` ${boardStyles.winning}`;
 
       return newBoardClasses;
     });
@@ -86,8 +83,8 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
     if (boardClasses[cellIdx].includes("marked")) return;
 
     const newBoardClasses = boardClasses.slice();
-    newBoardClasses[cellIdx] = `${styles.cell} ${
-      mark == "x" ? styles.outlineX : styles.outlineO
+    newBoardClasses[cellIdx] = `${boardStyles.cell} ${
+      mark == "x" ? boardStyles.outlineX : boardStyles.outlineO
     }`;
     setBoardClasses(newBoardClasses);
   }
@@ -96,7 +93,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
     if (boardClasses[cellIdx].includes("marked")) return;
 
     const newBoardClasses = boardClasses.slice();
-    newBoardClasses[cellIdx] = styles.cell;
+    newBoardClasses[cellIdx] = boardStyles.cell;
     setBoardClasses(newBoardClasses);
   }
 
@@ -111,8 +108,8 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
     setBoard(newBoard);
 
     const newBoardClasses = boardClasses.slice();
-    newBoardClasses[cellIdx] = `${styles.cell} ${styles.marked} ${
-      mark == "x" ? styles.markX : styles.markO
+    newBoardClasses[cellIdx] = `${boardStyles.cell} ${boardStyles.marked} ${
+      mark == "x" ? boardStyles.markX : boardStyles.markO
     }`;
     setBoardClasses(newBoardClasses);
 
@@ -131,7 +128,7 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
     }
 
     setBoard(Array(9).fill(""));
-    setBoardClasses(Array(9).fill(styles.cell));
+    setBoardClasses(Array(9).fill(boardStyles.cell));
   }
 
   return (
@@ -143,124 +140,35 @@ export default function Game({ gameMode, playerOneMark, onEnd }: GameProps) {
           AI is thinking
         </span>
 
-        <section className={styles.gameTop}>
-          <div className={styles.gameLogo}>
-            <img src="images/logo.svg" alt="Logo" />
-          </div>
-          <div className={styles.gameTurn}>
-            <span className={styles.currentPlayer}>{mark.toUpperCase()}</span>{" "}
-            TURN
-          </div>
-          <button
-            onClick={() => setModalState({ type: ModalType.RestartModal })}
-            type="button"
-            className={`${styles.restartBtn} push-button gray`}
-          >
-            <img src="images/icon-restart.svg" alt="Restart" />
-          </button>
-        </section>
-
-        <section className={styles.gameBoard}>
-          {boardClasses.map((className: string, index: number) => {
-            return (
-              <button
-                disabled={isAIsTurn}
-                key={index}
-                onMouseEnter={() => handleMouseEnterCell(index)}
-                onMouseLeave={() => handleMouseLeaveCell(index)}
-                onClick={() => handleMouseClickCell(index)}
-                type="button"
-                className={className}
-              />
-            );
-          })}
-        </section>
-
-        <section className={styles.scoreBoard}>
-          <div>
-            <span className="score-label">
-              X
-              {gameMode == GameMode.VsAI
-                ? playerOneMark == "x"
-                  ? " (YOU)"
-                  : " (AI)"
-                : playerOneMark == "x"
-                ? " (P1)"
-                : " (P2)"}
-            </span>
-            <span className="score">{scores.x}</span>
-          </div>
-          <div>
-            <span className="score-label">TIES</span>
-            <span className="score">{scores.ties}</span>
-          </div>
-          <div>
-            <span className="score-label">
-              O{" "}
-              {gameMode == GameMode.VsAI
-                ? playerOneMark == "o"
-                  ? " (YOU)"
-                  : " (AI)"
-                : playerOneMark == "o"
-                ? " (P1)"
-                : " (P2)"}
-            </span>
-            <span className="score">{scores.o}</span>
-          </div>
-        </section>
+        <GameHeader
+          restartBtnHandler={() =>
+            setModalState({ type: ModalType.RestartModal })
+          }
+          currentPlayerMark={mark}
+        />
+        <GameBoard
+          boardClasses={boardClasses}
+          isAIsTurn={isAIsTurn}
+          onClickCell={handleMouseClickCell}
+          onMouseEnterCell={handleMouseEnterCell}
+          onMouseLeaveCell={handleMouseLeaveCell}
+        />
+        <GameScoreboard
+          gameMode={gameMode}
+          playerOneMark={playerOneMark}
+          scores={scores}
+        />
       </div>
 
-      {modalState.type == ModalType.RestartModal && (
-        <>
-          <div id="overlay"></div>
-          <Modal
-            modalTitle="RESTART GAME?"
-            btnOneTitle="CANCEL"
-            btnTwoTitle="RESTART"
-            btnOneHandler={() => {
-              setModalState({});
-            }}
-            btnTwoHandler={() => {
-              setModalState({});
-              resetGame({ resetMark: true });
-            }}
-          />
-        </>
-      )}
-
-      {modalState.type == ModalType.WinnerModal && (
-        <>
-          <div id="overlay"></div>
-          <WinnerModal
-            title={
-              playerOneMark == modalState.value
-                ? "PLAYER 1 WINS"
-                : "PLAYER 2 WINS"
-            }
-            winner={modalState.value as "x" | "o"}
-            onNextBtnClicked={() => {
-              setModalState({});
-              resetGame({});
-            }}
-            onQuitBtnClicked={onEnd}
-          />
-        </>
-      )}
-
-      {modalState.type == ModalType.TiedModal && (
-        <>
-          <div id="overlay"></div>
-          <Modal
-            modalTitle="ROUND TIED!"
-            btnOneTitle="QUIT"
-            btnTwoTitle="NEXT ROUND"
-            btnOneHandler={onEnd}
-            btnTwoHandler={() => {
-              setModalState({});
-              resetGame({});
-            }}
-          />
-        </>
+      {modalState.type && (
+        <ModalView
+          type={modalState.type}
+          value={modalState.value!}
+          playerOneMark={playerOneMark}
+          modalStateUpdater={setModalState}
+          resetGameFunc={resetGame}
+          gameEndCallback={onEnd}
+        />
       )}
     </>
   );

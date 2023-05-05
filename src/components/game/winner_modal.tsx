@@ -1,4 +1,4 @@
-import styles from "@/components/game/winner_modal.module.css";
+import styles from "./styles/winner_modal.module.css";
 
 type WinnerModalProps = {
   title: string;

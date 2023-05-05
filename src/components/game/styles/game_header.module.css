@@ -1,0 +1,40 @@
+.gameTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 64px;
+}
+
+.gameLogo {
+  display: flex;
+  align-items: center;
+}
+
+.gameTurn {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--player-picker-bg);
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 0 var(--board-btn-shadow-color);
+}
+
+.currentPlayer {
+  font-size: 1.2em;
+}
+
+.restartBtn {
+  border-radius: 8px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 0 var(--btn-gray-shadow-color);
+}
+
+@media screen and (max-width: 420px) {
+  .gameTop {
+    gap: 24px;
+  }
+}

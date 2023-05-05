@@ -1,4 +1,4 @@
-import styles from "@/components/game/generic_modal.module.css";
+import styles from "./styles/generic_modal.module.css";
 
 type ModalProps = {
   modalTitle: string;

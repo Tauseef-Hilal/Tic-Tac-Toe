@@ -11,7 +11,12 @@ export default function getAIsMove(
     let best_action = -1;
 
     for (let action of actions(board)) {
-      let value = minimize(result(board, action, "x"), "o");
+      let value = minimize(
+        result(board, action, "x"),
+        "o",
+        Number.NEGATIVE_INFINITY,
+        Number.POSITIVE_INFINITY
+      );
       if (value > best_value) {
         best_value = value;
         best_action = action;
@@ -24,7 +29,12 @@ export default function getAIsMove(
     let best_action = -1;
 
     for (let action of actions(board)) {
-      let value = maximize(result(board, action, "o"), "x");
+      let value = maximize(
+        result(board, action, "o"),
+        "x",
+        Number.NEGATIVE_INFINITY,
+        Number.POSITIVE_INFINITY
+      );
 
       if (value < best_value) {
         best_value = value;
@@ -36,7 +46,12 @@ export default function getAIsMove(
   }
 }
 
-function minimize(board: string[], current: string) {
+function minimize(
+  board: string[],
+  current: string,
+  alpha: number,
+  beta: number
+) {
   switch (winner(board).res) {
     case "x":
       return 1;
@@ -46,20 +61,29 @@ function minimize(board: string[], current: string) {
       return 0;
   }
 
-  let value = 2;
   let min = 2;
   for (let action of actions(board)) {
-    value = maximize(
+    const value = maximize(
       result(board, action, current),
-      current == "x" ? "o" : "x"
+      current == "x" ? "o" : "x",
+      alpha,
+      beta
     );
+
     min = Math.min(value, min);
+    beta = Math.min(beta, min);
+    if (beta <= alpha) break;
   }
 
   return min;
 }
 
-function maximize(board: string[], current: string) {
+function maximize(
+  board: string[],
+  current: string,
+  alpha: number,
+  beta: number
+) {
   switch (winner(board).res) {
     case "x":
       return 1;
@@ -69,14 +93,18 @@ function maximize(board: string[], current: string) {
       return 0;
   }
 
-  let value = -2;
   let max = -2;
   for (let action of actions(board)) {
-    value = minimize(
+    const value = minimize(
       result(board, action, current),
-      current == "x" ? "o" : "x"
+      current == "x" ? "o" : "x",
+      alpha,
+      beta
     );
+
     max = Math.max(value, max);
+    alpha = Math.max(alpha, max);
+    if (beta <= alpha) break;
   }
 
   return max;

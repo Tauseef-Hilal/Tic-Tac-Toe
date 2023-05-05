@@ -2,6 +2,11 @@ export const enum GameMode {
   VsHuman,
   VsAI,
 }
+export const enum ModalType {
+  RestartModal,
+  WinnerModal,
+  TiedModal,
+}
 
 export function winner(board: string[]) {
   const lines = [
@@ -18,7 +23,7 @@ export function winner(board: string[]) {
   let isWinner = false;
   let winning_mark = "";
   let line = lines[0];
-  
+
   for (line of lines) {
     if (
       board[line[0]] == board[line[1]] &&
@@ -45,4 +50,3 @@ export function winner(board: string[]) {
 
   return { res: isTie ? "draw" : winning_mark, line };
 }
-

@@ -1,0 +1,59 @@
+.gameBoard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.cell {
+  padding: 18px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background-color: var(--player-picker-bg);
+  box-shadow: 0 8px 0px var(--board-btn-shadow-color);
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    background-size 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cell:not(.marked):hover {
+  transform: translate3d(0, 3px, 0);
+  box-shadow: 0 6px 0 var(--board-btn-shadow-color);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+}
+
+.winning.markX {
+  background-color: var(--btn-color-green);
+  background-image: url("/images/icon-x-dark.svg");
+}
+
+.winning.markO {
+  background-color: var(--btn-color-gold);
+  background-image: url("/images/icon-o-dark.svg");
+}
+
+.marked {
+  cursor: not-allowed;
+}
+
+.outlineX {
+  background-image: url("/images/icon-x-outline.svg");
+}
+
+.outlineO {
+  background-image: url("/images/icon-o-outline.svg");
+}
+
+.markX {
+  box-shadow: 0 3px 0 var(--board-btn-shadow-color);
+  background-image: url(/images/icon-x.svg);
+}
+
+.markO {
+  box-shadow: 0 3px 0 var(--board-btn-shadow-color);
+  background-image: url(/images/icon-o.svg);
+}
